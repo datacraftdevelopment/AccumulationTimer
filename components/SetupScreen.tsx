@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Play } from "lucide-react";
+import { Play, Info } from "lucide-react";
+import AboutModal from "./AboutModal";
 
 export type TrainingMode = "time" | "reps";
 
@@ -19,6 +20,7 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
   const [target, setTarget] = useState<string>("60");
   const [restTime, setRestTime] = useState<string>("15");
   const [bonus, setBonus] = useState<string>("5");
+  const [showAbout, setShowAbout] = useState(false);
 
   // Update defaults when mode changes
   const handleModeChange = (newMode: TrainingMode) => {
@@ -55,12 +57,21 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
   };
 
   return (
-    <div className="h-screen bg-gray-800 flex flex-col p-6">
-      {/* Header */}
-      <div className="text-center mb-8 mt-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Accumulation Timer</h1>
-        <p className="text-gray-400 text-sm">Configure your training session</p>
-      </div>
+    <>
+      <div className="h-screen bg-gray-800 flex flex-col p-6">
+        {/* Header */}
+        <div className="text-center mb-8 mt-8 relative">
+          <h1 className="text-3xl font-bold text-white mb-2">Accumulation Timer</h1>
+          <p className="text-gray-400 text-sm">Configure your training session</p>
+
+          {/* About Button */}
+          <button
+            onClick={() => setShowAbout(true)}
+            className="absolute top-0 right-0 text-gray-400 hover:text-white transition-colors p-2"
+          >
+            <Info size={24} />
+          </button>
+        </div>
 
       {/* Card Container */}
       <div className="flex-1 flex flex-col max-w-md mx-auto w-full">
@@ -164,5 +175,9 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
         </button>
       </div>
     </div>
+
+      {/* About Modal */}
+      {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
+    </>
   );
 }
