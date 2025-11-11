@@ -59,7 +59,7 @@ export default function TimeTrainingScreen({
   const progressPercent = Math.min(100, (totalAccumulated / target) * 100);
 
   return (
-    <div className="min-h-screen bg-green-500 flex flex-col p-6">
+    <div className="h-screen bg-green-500 flex flex-col p-6">
       {/* Attempt Counter */}
       <div className="text-center text-white text-xl font-semibold mb-4 mt-6">
         Attempt #{attempts.length + 1}

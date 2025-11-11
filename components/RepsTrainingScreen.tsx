@@ -31,7 +31,7 @@ export default function RepsTrainingScreen({
 
   return (
     <>
-      <div className="min-h-screen bg-blue-500 flex flex-col p-6">
+      <div className="h-screen bg-blue-500 flex flex-col p-6">
         {/* Attempt Counter */}
         <div className="text-center text-white text-xl font-semibold mb-4 mt-6">
           Set #{attempts.length + 1}

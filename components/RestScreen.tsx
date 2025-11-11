@@ -37,7 +37,7 @@ export default function RestScreen({
   const remaining = Math.max(0, target - totalAccumulated);
 
   return (
-    <div className="min-h-screen bg-orange-500 flex flex-col p-6">
+    <div className="h-screen bg-orange-500 flex flex-col p-6">
       {/* REST Header */}
       <div className="text-center text-white text-4xl font-bold mb-8 mt-12">
         REST

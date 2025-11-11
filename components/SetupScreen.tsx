@@ -55,7 +55,7 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-800 flex flex-col p-6">
+    <div className="h-screen bg-gray-800 flex flex-col p-6">
       {/* Header */}
       <div className="text-center mb-8 mt-8">
         <h1 className="text-3xl font-bold text-white mb-2">Accumulation Timer</h1>
