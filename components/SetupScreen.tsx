@@ -16,30 +16,42 @@ interface SetupScreenProps {
 
 export default function SetupScreen({ onStart }: SetupScreenProps) {
   const [mode, setMode] = useState<TrainingMode>("time");
-  const [target, setTarget] = useState(mode === "time" ? 60 : 20);
-  const [restTime, setRestTime] = useState(15);
-  const [bonus, setBonus] = useState(mode === "time" ? 5 : 2);
+  const [target, setTarget] = useState<string>("60");
+  const [restTime, setRestTime] = useState<string>("15");
+  const [bonus, setBonus] = useState<string>("5");
 
   // Update defaults when mode changes
   const handleModeChange = (newMode: TrainingMode) => {
     setMode(newMode);
     if (newMode === "time") {
-      setTarget(60);
-      setBonus(5);
+      setTarget("60");
+      setBonus("5");
     } else {
-      setTarget(20);
-      setBonus(2);
+      setTarget("20");
+      setBonus("2");
     }
   };
 
   const handleStart = () => {
+    const targetNum = parseInt(target) || 0;
+    const restTimeNum = parseInt(restTime) || 0;
+    const bonusNum = parseInt(bonus) || 0;
+
     // Validation
-    if (target < 1 || restTime < 5 || bonus < 0) {
-      alert("Please enter valid values");
+    if (targetNum < 1) {
+      alert("Target must be at least 1");
+      return;
+    }
+    if (restTimeNum < 0) {
+      alert("Rest time cannot be negative");
+      return;
+    }
+    if (bonusNum < 0) {
+      alert("Bonus cannot be negative");
       return;
     }
 
-    onStart({ mode, target, restTime, bonus });
+    onStart({ mode, target: targetNum, restTime: restTimeNum, bonus: bonusNum });
   };
 
   return (
@@ -88,10 +100,14 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
               {mode === "time" ? "Target Seconds" : "Target Reps"}
             </label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               value={target}
-              onChange={(e) => setTarget(Number(e.target.value))}
-              min="1"
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, '');
+                setTarget(value);
+              }}
               className="w-full bg-gray-600 text-white text-2xl font-bold rounded-xl px-6 py-4 focus:outline-none focus:ring-4 focus:ring-green-500"
             />
           </div>
@@ -102,10 +118,14 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
               Rest Time (seconds)
             </label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               value={restTime}
-              onChange={(e) => setRestTime(Number(e.target.value))}
-              min="5"
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, '');
+                setRestTime(value);
+              }}
               className="w-full bg-gray-600 text-white text-2xl font-bold rounded-xl px-6 py-4 focus:outline-none focus:ring-4 focus:ring-green-500"
             />
           </div>
@@ -116,10 +136,14 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
               {mode === "time" ? "Bonus Seconds Per Bail" : "Bonus Reps Per Set"}
             </label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               value={bonus}
-              onChange={(e) => setBonus(Number(e.target.value))}
-              min="0"
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, '');
+                setBonus(value);
+              }}
               className="w-full bg-gray-600 text-white text-2xl font-bold rounded-xl px-6 py-4 focus:outline-none focus:ring-4 focus:ring-green-500"
             />
             <p className="text-gray-400 text-sm mt-2">
