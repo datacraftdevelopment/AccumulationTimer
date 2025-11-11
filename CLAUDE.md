@@ -19,9 +19,9 @@ Accumulation Timer is a mobile-optimized web application for accumulation traini
 
 The app has two fundamentally different training modes that share some components but differ in core behavior:
 
-1. **Time Mode**: Uses a high-precision timer (100ms updates) to track hold duration. Users "bail out" when they can't hold any longer. Time accumulated = hold duration + bonus.
+1. **Time Mode**: Uses a high-precision timer (100ms updates) to track hold duration. Users "bail out" when they can't hold any longer. Time accumulated = hold duration + adjustment.
 
-2. **Reps Mode**: No active timer during sets. Users perform reps, then manually input the count. Reps accumulated = entered reps + bonus.
+2. **Reps Mode**: No active timer during sets. Users perform reps, then manually input the count. Reps accumulated = entered reps + adjustment.
 
 **Shared behavior**: Both modes use identical rest period countdown (1-second intervals) and completion logic.
 
@@ -36,10 +36,10 @@ The application uses React state management across several screens. Key state mu
 Critical state variables:
 - `mode`: 'time' | 'reps' - Determines which training screen and logic to use
 - `totalAccumulated`: Running sum of all completed sets (seconds or reps)
-- `attempts`: Array of attempt objects with value, bonus, total, timestamp
-- `isActive`: Currently in an active set
-- `isResting`: Currently in rest period
+- `attempts`: Array of attempt objects with value, bonus (adjustment), total, timestamp
+- `appState`: 'setup' | 'training' | 'resting' | 'complete' - Current screen state
 - `restCountdown`: Remaining rest seconds
+- `config`: { mode, target, restTime, bonus (adjustment) } - Training configuration
 
 ### Timer Precision Requirements
 
@@ -62,15 +62,17 @@ Critical state variables:
   globals.css       - Tailwind imports and custom styles
 
 /components
-  SetupScreen.tsx           - Mode selection + configuration
-  TimeTrainingScreen.tsx    - Timer-based training (time mode)
-  RepsTrainingScreen.tsx    - Manual rep entry (reps mode)
-  RestScreen.tsx            - Shared rest countdown (both modes)
-  CompletionScreen.tsx      - Results summary (both modes)
+  SetupScreen.tsx           - Mode selection + configuration with About button
+  TimeTrainingScreen.tsx    - Timer-based training with Reset button (time mode)
+  RepsTrainingScreen.tsx    - Manual rep entry with Reset button (reps mode)
+  RestScreen.tsx            - Shared rest countdown with Skip Rest and audio cues (both modes)
+  CompletionScreen.tsx      - Results summary with scrollable history (both modes)
   RepInputModal.tsx         - Rep count input (reps mode only)
+  AboutModal.tsx            - Usage instructions and tips modal
 
 /lib
   utils.ts          - Formatting functions (seconds, reps, time display)
+  audio.ts          - Web Audio API functions (warning and completion beeps)
 ```
 
 ## Common Development Commands
@@ -99,7 +101,48 @@ Since this is a single-session training app with no data persistence, testing sh
 - State transition verification (all modes)
 - Edge cases: rapid button presses, backgrounding app, very short/long values
 
+## Key Features
+
+### Audio Feedback
+- **Warning Beep**: Plays at 3 seconds remaining during rest (600Hz, 150ms)
+- **Completion Beep**: Plays when rest countdown reaches 0 (1000Hz, 300ms)
+- Uses Web Audio API for lightweight sound generation
+- Graceful fallback if audio not supported
+
+### User Controls
+- **Skip Rest**: Button on RestScreen to immediately start next set
+- **Reset**: Confirmation dialog on training screens to restart session
+- **About Modal**: Info button on SetupScreen with usage instructions
+
+### Terminology
+- **Adjustment (not "bonus")**: Time/reps added per set to compensate for transition time
+  - Example: 3-4 seconds to account for getting in/out of position during bailouts
+  - User configurable - can be 0 if no adjustment needed
+  - Applied as: `totalAdded = setValue + adjustment`
+
+### Screen Consistency
+- All screens use `h-screen` for fixed viewport height (iOS app conversion)
+- CompletionScreen has scrollable attempt history within fixed container
+- Progress displays use larger text (2xl font) for better visibility
+
 ## Critical Implementation Details
+
+### Audio Implementation
+```typescript
+// lib/audio.ts
+export function playBeep(frequency: number, duration: number) {
+  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+
+  oscillator.frequency.value = frequency;
+  oscillator.type = "sine";
+  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + duration / 1000);
+}
+```
 
 ### WakeLock API
 Prevent screen sleep during active training:
@@ -141,58 +184,88 @@ if (totalAccumulated + totalAdded >= target) {
 
 ## Mobile Optimization Requirements
 
-- **Viewport**: Full-screen height, no horizontal scroll
+- **Viewport**: Full-screen height (`h-screen`), no horizontal scroll
 - **Touch targets**: Minimum 60px height for all buttons
 - **Font sizes**:
-  - Active timers: 5-8rem
-  - Rest countdown: 6-10rem
-  - Labels: 1.5rem
+  - Active timers: 8xl (5rem)
+  - Rest countdown: 9xl (8rem)
+  - Progress text: 2xl (1.5rem) - enlarged for better visibility
+  - Labels: base to xl (1-1.25rem)
+  - About modal: Responsive with scrollable content
 - **Visual states**: Clear color differentiation
+  - Setup screen: Gray (#1f2937)
   - Active (time mode): Green (#10b981)
-  - Active (reps mode): Blue or distinct color
+  - Active (reps mode): Blue (#3b82f6)
   - Resting: Orange (#f59e0b)
-  - Complete: Blue (#3b82f6)
+  - Complete: Blue (#2563eb)
+- **Screen consistency**: All screens use `h-screen` for iOS app conversion
+- **Scrolling**: Only CompletionScreen attempt history scrolls (within fixed container)
 
 ## Mode-Specific Behaviors
 
 ### Time Mode
 - Start timer automatically when set begins
 - Show live timer with decimal precision (e.g., "47.3s")
-- "Bail Out" button stops timer and adds hold time + bonus
+- "Bail Out" button stops timer and adds hold time + adjustment
+- "Reset" button (with confirmation) to restart entire session
 - Format display: Simple seconds (e.g., "15s", "60s")
+- Larger progress section shows accumulated/target/remaining (2xl font)
 
 ### Reps Mode
 - NO automatic timer during set
 - Display accumulated/target (e.g., "12 / 20 reps")
 - "Done With Set" button opens rep input modal
+- "Reset" button (with confirmation) to restart entire session
 - Rep input modal:
   - Auto-focus numeric input
   - Auto-open keyboard on mobile
   - Large input field and button
   - Cancel option (don't log set)
-- After submitting reps: add entered reps + bonus to total
+- After submitting reps: add entered reps + adjustment to total
+- Larger progress section shows accumulated/target/remaining (2xl font)
+
+### Rest Screen (Both Modes)
+- Countdown display with large numbers (9xl font)
+- Audio cues: warning beep at 3s, completion beep at 0s
+- "Skip Rest" button to immediately start next set
+- Progress summary shows current progress toward target
+- Auto-transitions to next set when countdown reaches 0
 
 ## Edge Cases to Handle
 
 1. **Very short holds/sets**: Don't allow bail/done in first second (prevents accidents)
 2. **Invalid rep input**: Reject 0, negative, or non-numeric values
 3. **Timer cleanup**: Clear all intervals/timeouts on unmount
-4. **Mode defaults**: Time mode (target: 60s, bonus: 5s), Reps mode (target: 20, bonus: 2)
+4. **Mode defaults**: Time mode (target: 60s, adjustment: 5s), Reps mode (target: 20, adjustment: 2)
 5. **Background handling**: Pause active timers, preserve state on return
 6. **Rapid completion**: If user exceeds target significantly, still show correct final total
+7. **Reset confirmation**: Always confirm before resetting to prevent accidental data loss
+8. **Skip rest safety**: Allow skipping rest at any time without confirmation
+9. **Audio playback**: Handle browsers that block autoplay (iOS requires user interaction first)
+10. **Adjustment can be 0**: Rest time and adjustment fields accept 0 values
 
 ## Deployment
 
 Deploy to Vercel:
 ```bash
-# Vercel CLI (if installed)
-vercel
-
-# Or connect GitHub repo to Vercel dashboard
-# Ensure mobile viewport meta tags are set in layout.tsx
+# Production deployment
+git add -A && git commit -m "your message"
+git push
+vercel --prod --yes
 ```
 
-Test on actual iPhone/mobile device before considering complete.
+**Current Deployment:**
+- GitHub: https://github.com/datacraftdevelopment/AccumulationTimer
+- Production: https://accumulation-timer-9efdmtf8v-joe-5771s-projects.vercel.app
+
+**Testing Checklist:**
+- Test on actual iPhone/mobile device
+- Verify audio cues work (may require user interaction first on iOS)
+- Test WakeLock prevents screen sleep during training
+- Verify all screens are fixed height (h-screen) without scrolling issues
+- Test About modal provides clear usage instructions
+- Confirm Reset confirmation prevents accidental data loss
+- Test Skip Rest button transitions immediately
 
 ## Reference Documentation
 
