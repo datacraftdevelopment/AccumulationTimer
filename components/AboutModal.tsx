@@ -74,7 +74,7 @@ export default function AboutModal({ onClose }: AboutModalProps) {
               </li>
               <li className="flex gap-3">
                 <span className="font-semibold text-indigo-600 min-w-[24px]">3.</span>
-                <span>Add bonus time/reps (optional reward for completing each set)</span>
+                <span>Add adjustment time/reps (compensates for transition time or use as you prefer)</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-semibold text-indigo-600 min-w-[24px]">4.</span>
@@ -99,7 +99,7 @@ export default function AboutModal({ onClose }: AboutModalProps) {
               </li>
               <li className="flex gap-3">
                 <span className="text-indigo-600">•</span>
-                <span>Use the bonus feature to reward yourself for completing sets</span>
+                <span>Use the adjustment feature to compensate for transition time (e.g., 3-4 seconds lost during bailouts)</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-indigo-600">•</span>

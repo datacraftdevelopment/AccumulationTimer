@@ -144,7 +144,7 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
           {/* Bonus Input */}
           <div className="mb-2">
             <label className="block text-white text-base font-medium mb-2">
-              {mode === "time" ? "Bonus Seconds Per Bail" : "Bonus Reps Per Set"}
+              {mode === "time" ? "Adjustment Per Bail (seconds)" : "Adjustment Per Set (reps)"}
             </label>
             <input
               type="text"
@@ -158,7 +158,7 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
               className="w-full bg-gray-600 text-white text-2xl font-bold rounded-xl px-6 py-4 focus:outline-none focus:ring-4 focus:ring-green-500"
             />
             <p className="text-gray-400 text-sm mt-2">
-              Added to your total when you bail out
+              Compensate for transition time or use as you prefer
             </p>
           </div>
         </div>
