@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { formatSeconds, formatCountdown } from "@/lib/utils";
+import { playWarningBeep, playCompletionBeep } from "@/lib/audio";
 import type { TrainingMode } from "./SetupScreen";
 
 interface RestScreenProps {
@@ -25,12 +26,18 @@ export default function RestScreen({
 }: RestScreenProps) {
   useEffect(() => {
     if (restCountdown > 0) {
+      // Play warning beep at 3 seconds
+      if (restCountdown === 3) {
+        playWarningBeep();
+      }
+
       const timer = setTimeout(() => {
         onCountdownTick();
       }, 1000);
       return () => clearTimeout(timer);
     } else {
-      // Auto-transition when countdown reaches 0
+      // Play completion beep and auto-transition
+      playCompletionBeep();
       onRestComplete();
     }
   }, [restCountdown, onCountdownTick, onRestComplete]);
