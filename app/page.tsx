@@ -90,15 +90,17 @@ export default function Home() {
   const handleBailOut = (currentValue: number) => {
     if (!config) return;
 
-    const totalAdded = currentValue + config.bonus;
-    const newTotal = totalAccumulated + totalAdded;
+    // Subtraction model: holdTime - adjustment = time that counts toward goal
+    // Adjustment represents transition time that doesn't count
+    const timeSubtracted = Math.max(0, currentValue - config.bonus);
+    const newTotal = totalAccumulated + timeSubtracted;
 
     setAttempts([
       ...attempts,
       {
         value: currentValue,
         bonus: config.bonus,
-        total: totalAdded,
+        total: timeSubtracted,
         timestamp: Date.now(),
       },
     ]);

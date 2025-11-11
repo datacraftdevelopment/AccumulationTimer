@@ -9,7 +9,9 @@ A mobile-optimized web application for accumulation training (cluster sets/rest-
   - **Reps Mode**: Manual rep entry for counted exercises
 
 - **Automatic Rest Periods**: Configurable rest time between sets with countdown
-- **Bonus System**: Add bonus seconds/reps when you bail out or complete a set
+- **Adjustment System**:
+  - Time mode: Deduct transition time from holds (e.g., 10s hold - 5s = 5s counted)
+  - Reps mode: Add bonus reps when you complete a set
 - **Progress Tracking**: Visual progress bars and real-time statistics
 - **Session Summary**: Complete breakdown of attempts and totals at completion
 - **Mobile-First Design**: Large touch targets, dark theme, optimized for phones
@@ -48,7 +50,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 1. **Choose Training Mode**: Time or Reps
 2. **Set Target**: Your goal (seconds or reps)
 3. **Configure Rest Time**: How long to rest between sets (seconds)
-4. **Set Bonus**: Extra credit added when you bail/complete (seconds or reps)
+4. **Set Adjustment**:
+   - Time mode: Transition time to subtract from each hold
+   - Reps mode: Bonus reps to add per set
 5. **Start Training**: Begin your session
 
 ### Time Mode
@@ -56,7 +60,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - Timer starts automatically
 - Hold as long as possible
 - Press "Bail Out" when you can't continue
-- Your hold time + bonus is added to your total
+- Your hold time minus adjustment is counted toward your target (e.g., 10s hold - 5s adjustment = 5s counted)
+- Adjustment represents transition time that doesn't count
 - Automatic rest period begins
 - Repeat until you reach your target
 
@@ -65,7 +70,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - Perform your exercise (push-ups, pull-ups, etc.)
 - Press "Done With Set" when finished
 - Enter the number of reps you completed
-- Your reps + bonus is added to your total
+- Your reps plus adjustment bonus is counted toward your target (e.g., 10 reps + 2 adjustment = 12 counted)
 - Automatic rest period begins
 - Repeat until you reach your target
 

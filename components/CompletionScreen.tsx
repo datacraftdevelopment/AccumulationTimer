@@ -80,8 +80,10 @@ export default function CompletionScreen({
                 <th className="py-2 px-2 text-right">
                   {mode === "time" ? "Hold" : "Reps"}
                 </th>
-                <th className="py-2 px-2 text-right">Bonus</th>
-                <th className="py-2 px-2 text-right">Total</th>
+                <th className="py-2 px-2 text-right">
+                  {mode === "time" ? "Adj." : "Bonus"}
+                </th>
+                <th className="py-2 px-2 text-right">Counted</th>
               </tr>
             </thead>
             <tbody>

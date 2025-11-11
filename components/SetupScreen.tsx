@@ -158,7 +158,9 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
               className="w-full bg-gray-600 text-white text-2xl font-bold rounded-xl px-6 py-4 focus:outline-none focus:ring-4 focus:ring-green-500"
             />
             <p className="text-gray-400 text-sm mt-2">
-              Compensate for transition time or use as you prefer
+              {mode === "time"
+                ? "Transition time subtracted from each hold (e.g., 10s hold - 5s = 5s counted)"
+                : "Bonus reps added when you complete a set"}
             </p>
           </div>
         </div>

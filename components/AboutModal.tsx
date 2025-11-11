@@ -74,7 +74,7 @@ export default function AboutModal({ onClose }: AboutModalProps) {
               </li>
               <li className="flex gap-3">
                 <span className="font-semibold text-indigo-600 min-w-[24px]">3.</span>
-                <span>Add adjustment time/reps (compensates for transition time or use as you prefer)</span>
+                <span>Add adjustment value (Time mode: subtracted from holds; Reps mode: added bonus)</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-semibold text-indigo-600 min-w-[24px]">4.</span>
@@ -99,7 +99,11 @@ export default function AboutModal({ onClose }: AboutModalProps) {
               </li>
               <li className="flex gap-3">
                 <span className="text-indigo-600">•</span>
-                <span>Use the adjustment feature to compensate for transition time (e.g., 3-4 seconds lost during bailouts)</span>
+                <span><strong>Time mode:</strong> Adjustment represents transition time (e.g., 10s hold - 5s adjustment = 5s counted). Set to 0 if you want full hold time to count.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-indigo-600">•</span>
+                <span><strong>Reps mode:</strong> Adjustment adds bonus reps to each set (e.g., 10 reps + 2 bonus = 12 counted)</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-indigo-600">•</span>

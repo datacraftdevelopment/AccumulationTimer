@@ -7,11 +7,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Accumulation Timer is a mobile-optimized web application for accumulation training (cluster sets/rest-pause training). It supports both **time-based** (seconds) and **rep-based** training modes with automatic rest periods.
 
 **Tech Stack:**
-- Next.js with React
-- Tailwind CSS
-- TypeScript
+- Next.js 16+ (App Router) with React 19
+- Tailwind CSS 3+
+- TypeScript 5+
 - Vercel deployment
 - lucide-react icons
+- Web Audio API for sound effects
 
 ## Key Architecture Concepts
 
@@ -19,9 +20,9 @@ Accumulation Timer is a mobile-optimized web application for accumulation traini
 
 The app has two fundamentally different training modes that share some components but differ in core behavior:
 
-1. **Time Mode**: Uses a high-precision timer (100ms updates) to track hold duration. Users "bail out" when they can't hold any longer. Time accumulated = hold duration + adjustment.
+1. **Time Mode**: Uses a high-precision timer (100ms updates) to track hold duration. Users "bail out" when they can't hold any longer. **Time counted = hold duration - adjustment** (adjustment represents transition time that doesn't count toward goal). Example: 10s hold with 5s adjustment = 5s counted.
 
-2. **Reps Mode**: No active timer during sets. Users perform reps, then manually input the count. Reps accumulated = entered reps + adjustment.
+2. **Reps Mode**: No active timer during sets. Users perform reps, then manually input the count. **Reps counted = entered reps + adjustment** (adjustment is bonus reps added). Example: 10 reps with 2 adjustment = 12 counted.
 
 **Shared behavior**: Both modes use identical rest period countdown (1-second intervals) and completion logic.
 
@@ -36,10 +37,10 @@ The application uses React state management across several screens. Key state mu
 Critical state variables:
 - `mode`: 'time' | 'reps' - Determines which training screen and logic to use
 - `totalAccumulated`: Running sum of all completed sets (seconds or reps)
-- `attempts`: Array of attempt objects with value, bonus (adjustment), total, timestamp
+- `attempts`: Array of attempt objects with value, adjustment, total, timestamp
 - `appState`: 'setup' | 'training' | 'resting' | 'complete' - Current screen state
 - `restCountdown`: Remaining rest seconds
-- `config`: { mode, target, restTime, bonus (adjustment) } - Training configuration
+- `config`: { mode, target, restTime, adjustment } - Training configuration
 
 ### Timer Precision Requirements
 
@@ -75,31 +76,23 @@ Critical state variables:
   audio.ts          - Web Audio API functions (warning and completion beeps)
 ```
 
-## Common Development Commands
+## Development Commands
 
-### Initial Setup
 ```bash
-# Create Next.js app with TypeScript and Tailwind
-npx create-next-app@latest . --typescript --tailwind --app --no-src-dir
-
-# Install icons library
-npm install lucide-react
-```
-
-### Development
-```bash
+npm install          # Install dependencies
 npm run dev          # Start dev server (http://localhost:3000)
 npm run build        # Production build
 npm run start        # Run production build locally
 npm run lint         # Run ESLint
 ```
 
-### Testing
-Since this is a single-session training app with no data persistence, testing should focus on:
+### Testing Strategy
+Since this is a single-session training app with no data persistence, testing focuses on:
 - Manual testing on mobile devices (especially iPhone Safari)
 - Timer accuracy verification (time mode)
 - State transition verification (all modes)
 - Edge cases: rapid button presses, backgrounding app, very short/long values
+- Audio functionality (may require user interaction on iOS)
 
 ## Key Features
 
@@ -115,10 +108,14 @@ Since this is a single-session training app with no data persistence, testing sh
 - **About Modal**: Info button on SetupScreen with usage instructions
 
 ### Terminology
-- **Adjustment (not "bonus")**: Time/reps added per set to compensate for transition time
-  - Example: 3-4 seconds to account for getting in/out of position during bailouts
-  - User configurable - can be 0 if no adjustment needed
-  - Applied as: `totalAdded = setValue + adjustment`
+- **Adjustment**: Behaves differently per mode
+  - **Time Mode**: Penalty/deduction representing transition time that doesn't count toward goal
+    - Example: 10s hold with 5s adjustment = only 5s counts toward target
+    - Applied as: `timeCounted = Math.max(0, holdTime - adjustment)`
+    - Set to 0 if you want full hold time to count
+  - **Reps Mode**: Bonus added to reward completing a set
+    - Example: 10 reps with 2 adjustment = 12 reps count toward target
+    - Applied as: `repsCounted = reps + adjustment`
 
 ### Screen Consistency
 - All screens use `h-screen` for fixed viewport height (iOS app conversion)
@@ -128,8 +125,15 @@ Since this is a single-session training app with no data persistence, testing sh
 ## Critical Implementation Details
 
 ### Audio Implementation
+The app uses Web Audio API to generate lightweight beeps without audio files:
+
 ```typescript
-// lib/audio.ts
+// lib/audio.ts - playBeep function
+// Creates sine wave oscillator at specified frequency and duration
+// Warning beep: 600Hz, 150ms at 3 seconds remaining
+// Completion beep: 1000Hz, 300ms when countdown reaches 0
+// Volume: 0.3 (30% gain)
+
 export function playBeep(frequency: number, duration: number) {
   const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
   const oscillator = audioContext.createOscillator();
@@ -139,10 +143,15 @@ export function playBeep(frequency: number, duration: number) {
   oscillator.type = "sine";
   gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
 
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+
   oscillator.start(audioContext.currentTime);
   oscillator.stop(audioContext.currentTime + duration / 1000);
 }
 ```
+
+**Important**: iOS Safari may block autoplay. Audio will work after first user interaction.
 
 ### WakeLock API
 Prevent screen sleep during active training:
@@ -206,7 +215,9 @@ if (totalAccumulated + totalAdded >= target) {
 ### Time Mode
 - Start timer automatically when set begins
 - Show live timer with decimal precision (e.g., "47.3s")
-- "Bail Out" button stops timer and adds hold time + adjustment
+- "Bail Out" button stops timer and calculates: **hold time - adjustment = time counted**
+- Adjustment represents transition time that doesn't count (e.g., getting in/out of position)
+- If adjustment >= hold time, 0 seconds are counted (Math.max ensures non-negative)
 - "Reset" button (with confirmation) to restart entire session
 - Format display: Simple seconds (e.g., "15s", "60s")
 - Larger progress section shows accumulated/target/remaining (2xl font)
@@ -243,20 +254,21 @@ if (totalAccumulated + totalAdded >= target) {
 8. **Skip rest safety**: Allow skipping rest at any time without confirmation
 9. **Audio playback**: Handle browsers that block autoplay (iOS requires user interaction first)
 10. **Adjustment can be 0**: Rest time and adjustment fields accept 0 values
+11. **Adjustment >= hold time (time mode)**: If adjustment is greater than or equal to hold time, 0 seconds are counted (uses Math.max to prevent negative values)
 
 ## Deployment
 
-Deploy to Vercel:
+Deploy to Vercel (configured via vercel.json):
 ```bash
-# Production deployment
+# Push to trigger automatic deployment
 git add -A && git commit -m "your message"
 git push
+
+# Or manual deployment
 vercel --prod --yes
 ```
 
-**Current Deployment:**
-- GitHub: https://github.com/datacraftdevelopment/AccumulationTimer
-- Production: https://accumulation-timer-9efdmtf8v-joe-5771s-projects.vercel.app
+The project is configured to deploy automatically from the main branch via Vercel integration.
 
 **Testing Checklist:**
 - Test on actual iPhone/mobile device
