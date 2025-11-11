@@ -11,6 +11,7 @@ interface RestScreenProps {
   totalAccumulated: number;
   onCountdownTick: () => void;
   onRestComplete: () => void;
+  onSkipRest: () => void;
 }
 
 export default function RestScreen({
@@ -20,6 +21,7 @@ export default function RestScreen({
   totalAccumulated,
   onCountdownTick,
   onRestComplete,
+  onSkipRest,
 }: RestScreenProps) {
   useEffect(() => {
     if (restCountdown > 0) {
@@ -56,7 +58,7 @@ export default function RestScreen({
       </div>
 
       {/* Progress Section */}
-      <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 mb-6">
+      <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 mb-4">
         <div className="flex justify-between text-white text-lg mb-3">
           <span>
             Accumulated:{" "}
@@ -80,6 +82,14 @@ export default function RestScreen({
           {mode === "time" ? formatSeconds(remaining) : `${remaining} reps`}
         </div>
       </div>
+
+      {/* Skip Rest Button */}
+      <button
+        onClick={onSkipRest}
+        className="w-full bg-white/20 hover:bg-white/30 text-white font-semibold text-base py-3 rounded-xl transition-colors"
+      >
+        Skip Rest
+      </button>
     </div>
   );
 }

@@ -149,6 +149,21 @@ export default function Home() {
     setAppState("training");
   };
 
+  const handleSkipRest = () => {
+    setAppState("training");
+  };
+
+  const handleReset = () => {
+    if (confirm("Are you sure you want to reset? All progress will be lost.")) {
+      setAppState("setup");
+      setConfig(null);
+      setTotalAccumulated(0);
+      setAttempts([]);
+      setRestCountdown(0);
+      setSessionStartTime(0);
+    }
+  };
+
   const handleNewSession = () => {
     setAppState("setup");
     setConfig(null);
@@ -175,6 +190,7 @@ export default function Home() {
               totalAccumulated={totalAccumulated}
               attempts={attempts}
               onBailOut={handleBailOut}
+              onReset={handleReset}
             />
           ) : (
             <RepsTrainingScreen
@@ -183,6 +199,7 @@ export default function Home() {
               totalAccumulated={totalAccumulated}
               attempts={attempts}
               onDoneWithSet={handleDoneWithSet}
+              onReset={handleReset}
             />
           )}
         </>
@@ -196,6 +213,7 @@ export default function Home() {
           totalAccumulated={totalAccumulated}
           onCountdownTick={handleCountdownTick}
           onRestComplete={handleRestComplete}
+          onSkipRest={handleSkipRest}
         />
       )}
 

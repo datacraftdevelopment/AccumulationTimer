@@ -10,6 +10,7 @@ interface RepsTrainingScreenProps {
   totalAccumulated: number;
   attempts: Attempt[];
   onDoneWithSet: (reps: number) => void;
+  onReset: () => void;
 }
 
 export default function RepsTrainingScreen({
@@ -18,6 +19,7 @@ export default function RepsTrainingScreen({
   totalAccumulated,
   attempts,
   onDoneWithSet,
+  onReset,
 }: RepsTrainingScreenProps) {
   const [showRepInput, setShowRepInput] = useState(false);
 
@@ -32,9 +34,17 @@ export default function RepsTrainingScreen({
   return (
     <>
       <div className="h-screen bg-blue-500 flex flex-col p-6">
-        {/* Attempt Counter */}
-        <div className="text-center text-white text-xl font-semibold mb-4 mt-6">
-          Set #{attempts.length + 1}
+        {/* Attempt Counter and Reset Button */}
+        <div className="flex justify-between items-center mb-4 mt-4">
+          <div className="text-white text-xl font-semibold">
+            Set #{attempts.length + 1}
+          </div>
+          <button
+            onClick={onReset}
+            className="text-white/70 hover:text-white text-sm font-medium px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+          >
+            Reset
+          </button>
         </div>
 
         {/* Main Display */}
@@ -49,23 +59,24 @@ export default function RepsTrainingScreen({
           </div>
         </div>
 
-        {/* Progress Section */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 mb-6">
-          <div className="flex justify-between text-white text-lg mb-3">
-            <span>Accumulated: {totalAccumulated}</span>
-            <span>Target: {target}</span>
+        {/* Progress Section - Larger */}
+        <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 mb-4">
+          <div className="flex justify-between text-white text-2xl font-bold mb-4">
+            <span>{totalAccumulated}</span>
+            <span className="text-white/60">/</span>
+            <span>{target}</span>
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full bg-white/20 rounded-full h-4 mb-3 overflow-hidden">
+          <div className="w-full bg-white/20 rounded-full h-5 mb-4 overflow-hidden">
             <div
               className="bg-white h-full rounded-full transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
 
-          <div className="text-white text-base text-center">
-            Remaining: {remaining} reps
+          <div className="text-white text-xl text-center font-semibold">
+            {remaining} reps remaining
           </div>
         </div>
 
