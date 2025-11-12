@@ -116,6 +116,27 @@ export default function Home() {
     }
   };
 
+  const handleStop = (currentValue: number) => {
+    if (!config) return;
+
+    // Stop without adjustment - full time counts
+    const newTotal = totalAccumulated + currentValue;
+
+    setAttempts([
+      ...attempts,
+      {
+        value: currentValue,
+        bonus: 0, // No adjustment applied for stop
+        total: currentValue,
+        timestamp: Date.now(),
+      },
+    ]);
+    setTotalAccumulated(newTotal);
+
+    // Always go to complete when stopping
+    setAppState("complete");
+  };
+
   const handleDoneWithSet = (reps: number) => {
     if (!config) return;
 
@@ -192,6 +213,7 @@ export default function Home() {
               totalAccumulated={totalAccumulated}
               attempts={attempts}
               onBailOut={handleBailOut}
+              onStop={handleStop}
               onReset={handleReset}
             />
           ) : (

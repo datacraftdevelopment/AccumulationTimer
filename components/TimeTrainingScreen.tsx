@@ -16,6 +16,7 @@ interface TimeTrainingScreenProps {
   totalAccumulated: number;
   attempts: Attempt[];
   onBailOut: (currentValue: number) => void;
+  onStop: (currentValue: number) => void;
   onReset: () => void;
 }
 
@@ -25,6 +26,7 @@ export default function TimeTrainingScreen({
   totalAccumulated,
   attempts,
   onBailOut,
+  onStop,
   onReset,
 }: TimeTrainingScreenProps) {
   const [currentValue, setCurrentValue] = useState(0);
@@ -57,11 +59,17 @@ export default function TimeTrainingScreen({
     onBailOut(currentValue);
   };
 
+  const handleStop = () => {
+    if (!canBail) return;
+    onStop(currentValue);
+  };
+
   // Calculate live progress including current timer
   const currentCounted = Math.max(0, currentValue - bonus);
   const liveTotal = totalAccumulated + currentCounted;
   const remaining = Math.max(0, target - liveTotal);
   const progressPercent = Math.min(100, (liveTotal / target) * 100);
+  const targetReached = liveTotal >= target;
 
   return (
     <div className="h-screen bg-green-500 flex flex-col p-6">
@@ -111,18 +119,47 @@ export default function TimeTrainingScreen({
         </div>
       </div>
 
-      {/* Bail Out Button */}
-      <button
-        onClick={handleBailOut}
-        disabled={!canBail}
-        className={`w-full text-white font-bold text-3xl py-8 rounded-2xl shadow-2xl transition-all ${
-          canBail
-            ? "bg-orange-500 hover:bg-orange-600 active:scale-95"
-            : "bg-gray-600 opacity-50 cursor-not-allowed"
-        }`}
-      >
-        {canBail ? "Bail Out" : "Get Ready..."}
-      </button>
+      {/* Action Buttons */}
+      {targetReached ? (
+        // Only show Stop button when target is reached
+        <button
+          onClick={handleStop}
+          disabled={!canBail}
+          className={`w-full text-white font-bold text-3xl py-8 rounded-2xl shadow-2xl transition-all ${
+            canBail
+              ? "bg-red-500 hover:bg-red-600 active:scale-95"
+              : "bg-gray-600 opacity-50 cursor-not-allowed"
+          }`}
+        >
+          {canBail ? "Stop" : "Get Ready..."}
+        </button>
+      ) : (
+        // Show both Bail Out and Stop buttons when target not reached
+        <div className="flex gap-4">
+          <button
+            onClick={handleBailOut}
+            disabled={!canBail}
+            className={`flex-1 text-white font-bold text-3xl py-8 rounded-2xl shadow-2xl transition-all ${
+              canBail
+                ? "bg-orange-500 hover:bg-orange-600 active:scale-95"
+                : "bg-gray-600 opacity-50 cursor-not-allowed"
+            }`}
+          >
+            {canBail ? "Bail Out" : "Get Ready..."}
+          </button>
+          <button
+            onClick={handleStop}
+            disabled={!canBail}
+            className={`flex-1 text-white font-bold text-3xl py-8 rounded-2xl shadow-2xl transition-all ${
+              canBail
+                ? "bg-red-500 hover:bg-red-600 active:scale-95"
+                : "bg-gray-600 opacity-50 cursor-not-allowed"
+            }`}
+          >
+            {canBail ? "Stop" : "Get Ready..."}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
