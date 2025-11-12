@@ -48,6 +48,14 @@ Critical state variables:
 - Must use `Date.now()` for precision (not `setTimeout` intervals alone)
 - Update display every 100ms for smooth visual feedback
 - Calculate elapsed time as `(Date.now() - startTime) / 1000`
+- **Live Progress Calculation (during hold)**:
+  ```typescript
+  const currentCounted = Math.max(0, currentValue - bonus);
+  const liveTotal = totalAccumulated + currentCounted;
+  const remaining = Math.max(0, target - liveTotal);
+  const progressPercent = Math.min(100, (liveTotal / target) * 100);
+  ```
+- **Display Synchronization**: Use `formatSecondsWithDecimal` for all live values (timer, progress, remaining) to prevent visual lag
 
 **Rest Countdown Timer (Both Modes):**
 - Simple 1-second intervals using `setTimeout` or `setInterval`
@@ -105,7 +113,14 @@ Since this is a single-session training app with no data persistence, testing fo
 ### User Controls
 - **Skip Rest**: Button on RestScreen to immediately start next set
 - **Reset**: Confirmation dialog on training screens to restart session
+- **Stop** (Time mode only): End session early with full time counted (no adjustment penalty)
 - **About Modal**: Info button on SetupScreen with usage instructions
+
+### Live Progress (Time Mode)
+- **Real-time Updates**: Progress bar and totals update every 100ms during active holds
+- **Synchronized Display**: Timer, progress bar, and remaining time all use decimal precision
+- **Visual Feedback**: See exactly when you'll hit your target before bailing out
+- **Calculation**: Progress includes current hold minus adjustment (`Math.max(0, currentValue - adjustment)`)
 
 ### Terminology
 - **Adjustment**: Behaves differently per mode
@@ -215,12 +230,22 @@ if (totalAccumulated + totalAdded >= target) {
 ### Time Mode
 - Start timer automatically when set begins
 - Show live timer with decimal precision (e.g., "47.3s")
-- "Bail Out" button stops timer and calculates: **hold time - adjustment = time counted**
-- Adjustment represents transition time that doesn't count (e.g., getting in/out of position)
-- If adjustment >= hold time, 0 seconds are counted (Math.max ensures non-negative)
+- **Live Progress Updates**: Progress bar and accumulated time update in real-time during hold (not just after bail)
+  - Calculates: `currentCounted = Math.max(0, currentValue - adjustment)`
+  - Shows: `liveTotal = totalAccumulated + currentCounted`
+  - All displays use decimal precision to stay synchronized with timer
+- **Two Action Buttons**:
+  - **"Bail Out"** (orange): Stops timer, applies adjustment penalty, continues to rest period
+    - Calculation: **hold time - adjustment = time counted**
+    - Adjustment represents transition time that doesn't count
+  - **"Stop"** (red): Ends session immediately with full time counted (no adjustment penalty)
+    - Calculation: full hold time counts toward total
+    - Goes directly to completion screen
+- **Dynamic Button Display**:
+  - Before reaching target: Shows both "Bail Out" and "Stop" buttons
+  - After reaching target: Shows only "Stop" button
 - "Reset" button (with confirmation) to restart entire session
-- Format display: Simple seconds (e.g., "15s", "60s")
-- Larger progress section shows accumulated/target/remaining (2xl font)
+- Format display: Decimal seconds for live values (e.g., "47.3s"), simple seconds for target (e.g., "60s")
 
 ### Reps Mode
 - NO automatic timer during set
@@ -255,6 +280,12 @@ if (totalAccumulated + totalAdded >= target) {
 9. **Audio playback**: Handle browsers that block autoplay (iOS requires user interaction first)
 10. **Adjustment can be 0**: Rest time and adjustment fields accept 0 values
 11. **Adjustment >= hold time (time mode)**: If adjustment is greater than or equal to hold time, 0 seconds are counted (uses Math.max to prevent negative values)
+12. **Stop vs Bail Out (time mode)**:
+    - Bail Out: Applies adjustment penalty, continues session (goes to rest if target not reached)
+    - Stop: No adjustment penalty, always ends session immediately (goes to completion screen)
+    - Stop button behavior logged with `bonus: 0` in attempts array
+13. **Live progress calculations**: Progress updates use same timer precision (100ms) to stay synchronized
+14. **Target reached display**: When live progress shows target reached, only Stop button is shown (hides Bail Out)
 
 ## Deployment
 
