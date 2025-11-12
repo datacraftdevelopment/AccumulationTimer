@@ -101,7 +101,7 @@ export default function TimeTrainingScreen({
       {/* Progress Section - Larger */}
       <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 mb-4">
         <div className="flex justify-between text-white text-2xl font-bold mb-4">
-          <span>{formatSeconds(liveTotal)}</span>
+          <span>{formatSecondsWithDecimal(liveTotal)}</span>
           <span className="text-white/60">/</span>
           <span>{formatSeconds(target)}</span>
         </div>
@@ -115,7 +115,7 @@ export default function TimeTrainingScreen({
         </div>
 
         <div className="text-white text-xl text-center font-semibold">
-          {formatSeconds(remaining)} remaining
+          {formatSecondsWithDecimal(remaining)} remaining
         </div>
       </div>
 
