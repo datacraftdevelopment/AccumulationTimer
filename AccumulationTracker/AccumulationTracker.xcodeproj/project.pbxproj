@@ -1,0 +1,555 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		D81C4ECE2EC6350F00FBC2EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D81C4EB82EC6350E00FBC2EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D81C4EBF2EC6350E00FBC2EB;
+			remoteInfo = AccumulationTracker;
+		};
+		D81C4ED82EC6350F00FBC2EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D81C4EB82EC6350E00FBC2EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D81C4EBF2EC6350E00FBC2EB;
+			remoteInfo = AccumulationTracker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D81C4EC02EC6350E00FBC2EB /* AccumulationTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccumulationTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D81C4ECD2EC6350F00FBC2EB /* AccumulationTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccumulationTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D81C4ED72EC6350F00FBC2EB /* AccumulationTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccumulationTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		D81C4EC22EC6350E00FBC2EB /* AccumulationTracker */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AccumulationTracker;
+			sourceTree = "<group>";
+		};
+		D81C4ED02EC6350F00FBC2EB /* AccumulationTrackerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AccumulationTrackerTests;
+			sourceTree = "<group>";
+		};
+		D81C4EDA2EC6350F00FBC2EB /* AccumulationTrackerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AccumulationTrackerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D81C4EBD2EC6350E00FBC2EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D81C4ECA2EC6350F00FBC2EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D81C4ED42EC6350F00FBC2EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D81C4EB72EC6350E00FBC2EB = {
+			isa = PBXGroup;
+			children = (
+				D81C4EC22EC6350E00FBC2EB /* AccumulationTracker */,
+				D81C4ED02EC6350F00FBC2EB /* AccumulationTrackerTests */,
+				D81C4EDA2EC6350F00FBC2EB /* AccumulationTrackerUITests */,
+				D81C4EC12EC6350E00FBC2EB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D81C4EC12EC6350E00FBC2EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D81C4EC02EC6350E00FBC2EB /* AccumulationTracker.app */,
+				D81C4ECD2EC6350F00FBC2EB /* AccumulationTrackerTests.xctest */,
+				D81C4ED72EC6350F00FBC2EB /* AccumulationTrackerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D81C4EBF2EC6350E00FBC2EB /* AccumulationTracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D81C4EE12EC6350F00FBC2EB /* Build configuration list for PBXNativeTarget "AccumulationTracker" */;
+			buildPhases = (
+				D81C4EBC2EC6350E00FBC2EB /* Sources */,
+				D81C4EBD2EC6350E00FBC2EB /* Frameworks */,
+				D81C4EBE2EC6350E00FBC2EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D81C4EC22EC6350E00FBC2EB /* AccumulationTracker */,
+			);
+			name = AccumulationTracker;
+			packageProductDependencies = (
+			);
+			productName = AccumulationTracker;
+			productReference = D81C4EC02EC6350E00FBC2EB /* AccumulationTracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D81C4ECC2EC6350F00FBC2EB /* AccumulationTrackerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D81C4EE42EC6350F00FBC2EB /* Build configuration list for PBXNativeTarget "AccumulationTrackerTests" */;
+			buildPhases = (
+				D81C4EC92EC6350F00FBC2EB /* Sources */,
+				D81C4ECA2EC6350F00FBC2EB /* Frameworks */,
+				D81C4ECB2EC6350F00FBC2EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D81C4ECF2EC6350F00FBC2EB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D81C4ED02EC6350F00FBC2EB /* AccumulationTrackerTests */,
+			);
+			name = AccumulationTrackerTests;
+			packageProductDependencies = (
+			);
+			productName = AccumulationTrackerTests;
+			productReference = D81C4ECD2EC6350F00FBC2EB /* AccumulationTrackerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D81C4ED62EC6350F00FBC2EB /* AccumulationTrackerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D81C4EE72EC6350F00FBC2EB /* Build configuration list for PBXNativeTarget "AccumulationTrackerUITests" */;
+			buildPhases = (
+				D81C4ED32EC6350F00FBC2EB /* Sources */,
+				D81C4ED42EC6350F00FBC2EB /* Frameworks */,
+				D81C4ED52EC6350F00FBC2EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D81C4ED92EC6350F00FBC2EB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D81C4EDA2EC6350F00FBC2EB /* AccumulationTrackerUITests */,
+			);
+			name = AccumulationTrackerUITests;
+			packageProductDependencies = (
+			);
+			productName = AccumulationTrackerUITests;
+			productReference = D81C4ED72EC6350F00FBC2EB /* AccumulationTrackerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D81C4EB82EC6350E00FBC2EB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					D81C4EBF2EC6350E00FBC2EB = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					D81C4ECC2EC6350F00FBC2EB = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = D81C4EBF2EC6350E00FBC2EB;
+					};
+					D81C4ED62EC6350F00FBC2EB = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = D81C4EBF2EC6350E00FBC2EB;
+					};
+				};
+			};
+			buildConfigurationList = D81C4EBB2EC6350E00FBC2EB /* Build configuration list for PBXProject "AccumulationTracker" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D81C4EB72EC6350E00FBC2EB;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D81C4EC12EC6350E00FBC2EB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D81C4EBF2EC6350E00FBC2EB /* AccumulationTracker */,
+				D81C4ECC2EC6350F00FBC2EB /* AccumulationTrackerTests */,
+				D81C4ED62EC6350F00FBC2EB /* AccumulationTrackerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D81C4EBE2EC6350E00FBC2EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D81C4ECB2EC6350F00FBC2EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D81C4ED52EC6350F00FBC2EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D81C4EBC2EC6350E00FBC2EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D81C4EC92EC6350F00FBC2EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D81C4ED32EC6350F00FBC2EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D81C4ECF2EC6350F00FBC2EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D81C4EBF2EC6350E00FBC2EB /* AccumulationTracker */;
+			targetProxy = D81C4ECE2EC6350F00FBC2EB /* PBXContainerItemProxy */;
+		};
+		D81C4ED92EC6350F00FBC2EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D81C4EBF2EC6350E00FBC2EB /* AccumulationTracker */;
+			targetProxy = D81C4ED82EC6350F00FBC2EB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D81C4EDF2EC6350F00FBC2EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D81C4EE02EC6350F00FBC2EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D81C4EE22EC6350F00FBC2EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joedasilva.com.AccumulationTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D81C4EE32EC6350F00FBC2EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joedasilva.com.AccumulationTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D81C4EE52EC6350F00FBC2EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joedasilva.com.AccumulationTrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccumulationTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AccumulationTracker";
+			};
+			name = Debug;
+		};
+		D81C4EE62EC6350F00FBC2EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joedasilva.com.AccumulationTrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccumulationTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AccumulationTracker";
+			};
+			name = Release;
+		};
+		D81C4EE82EC6350F00FBC2EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joedasilva.com.AccumulationTrackerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AccumulationTracker;
+			};
+			name = Debug;
+		};
+		D81C4EE92EC6350F00FBC2EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joedasilva.com.AccumulationTrackerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AccumulationTracker;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D81C4EBB2EC6350E00FBC2EB /* Build configuration list for PBXProject "AccumulationTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D81C4EDF2EC6350F00FBC2EB /* Debug */,
+				D81C4EE02EC6350F00FBC2EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D81C4EE12EC6350F00FBC2EB /* Build configuration list for PBXNativeTarget "AccumulationTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D81C4EE22EC6350F00FBC2EB /* Debug */,
+				D81C4EE32EC6350F00FBC2EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D81C4EE42EC6350F00FBC2EB /* Build configuration list for PBXNativeTarget "AccumulationTrackerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D81C4EE52EC6350F00FBC2EB /* Debug */,
+				D81C4EE62EC6350F00FBC2EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D81C4EE72EC6350F00FBC2EB /* Build configuration list for PBXNativeTarget "AccumulationTrackerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D81C4EE82EC6350F00FBC2EB /* Debug */,
+				D81C4EE92EC6350F00FBC2EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D81C4EB82EC6350E00FBC2EB /* Project object */;
+}

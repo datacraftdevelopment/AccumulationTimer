@@ -66,13 +66,8 @@ export default function RepInputModal({
           onChange={(e) => setReps(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="0"
-          className="w-full bg-gray-600 text-white text-6xl font-bold text-center rounded-2xl px-6 py-8 mb-4 focus:outline-none focus:ring-4 focus:ring-blue-500"
+          className="w-full bg-gray-600 text-white text-6xl font-bold text-center rounded-2xl px-6 py-8 mb-8 focus:outline-none focus:ring-4 focus:ring-blue-500"
         />
-
-        {/* Bonus Info */}
-        <div className="text-center text-gray-300 text-lg mb-8">
-          <span className="font-semibold">+{bonus}</span> bonus reps will be added
-        </div>
 
         {/* Action Buttons */}
         <div className="flex gap-4">

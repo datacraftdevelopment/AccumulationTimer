@@ -2,19 +2,22 @@
 
 import { useState, useEffect, useRef } from "react";
 import SetupScreen, { type TrainingMode } from "@/components/SetupScreen";
+import ExercisesScreen from "@/components/ExercisesScreen";
+import HistoryScreen from "@/components/HistoryScreen";
 import TimeTrainingScreen from "@/components/TimeTrainingScreen";
 import RepsTrainingScreen from "@/components/RepsTrainingScreen";
 import RestScreen from "@/components/RestScreen";
 import CompletionScreen from "@/components/CompletionScreen";
 import type { Attempt } from "@/components/TimeTrainingScreen";
 
-type AppState = "setup" | "training" | "resting" | "complete";
+type AppState = "setup" | "training" | "resting" | "complete" | "exercises" | "history";
 
 interface TrainingConfig {
   mode: TrainingMode;
   target: number;
   restTime: number;
   bonus: number;
+  exerciseName: string;
 }
 
 export default function Home() {
@@ -24,6 +27,7 @@ export default function Home() {
   const [attempts, setAttempts] = useState<Attempt[]>([]);
   const [restCountdown, setRestCountdown] = useState(0);
   const [sessionStartTime, setSessionStartTime] = useState(0);
+  const [selectedExerciseForHistory, setSelectedExerciseForHistory] = useState<string | null>(null);
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
   // WakeLock: Prevent screen from sleeping during training
@@ -202,7 +206,30 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      {appState === "setup" && <SetupScreen onStart={handleStart} />}
+      {appState === "setup" && (
+        <SetupScreen
+          onStart={handleStart}
+          onManageExercises={() => setAppState("exercises")}
+          onViewHistory={(exerciseName) => {
+            setSelectedExerciseForHistory(exerciseName);
+            setAppState("history");
+          }}
+        />
+      )}
+
+      {appState === "exercises" && (
+        <ExercisesScreen onBack={() => setAppState("setup")} />
+      )}
+
+      {appState === "history" && (
+        <HistoryScreen
+          onBack={() => {
+            setSelectedExerciseForHistory(null);
+            setAppState("setup");
+          }}
+          initialExercise={selectedExerciseForHistory}
+        />
+      )}
 
       {appState === "training" && config && (
         <>
@@ -246,6 +273,9 @@ export default function Home() {
           mode={config.mode}
           totalAccumulated={totalAccumulated}
           target={config.target}
+          restTime={config.restTime}
+          adjustment={config.bonus}
+          exerciseName={config.exerciseName}
           attempts={attempts}
           sessionDuration={sessionDuration}
           onNewSession={handleNewSession}

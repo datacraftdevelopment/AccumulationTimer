@@ -318,3 +318,149 @@ See `Scope.md` for complete functional specification including:
 - UI/UX specifications
 - Example training sessions
 - Full testing checklist
+
+## Cloud Persistence & Data Management (NEW)
+
+The app has evolved from a single-session timer to a full **Accumulation Tracker** with cloud persistence using Airtable.
+
+### Airtable Integration
+
+**Database Schema** (AI_Test base: appKNnqnplJrCPua3):
+
+**Exercises Table**:
+- Stores exercise presets (Straight Handstand, Tuck, Straddle, Pike, etc.)
+- Fields: name, mode, default_target, default_rest_time, default_adjustment
+- Users can create, edit, and delete exercises via ExercisesScreen
+
+**Sessions Table**:
+- Records each completed training session
+- Fields: exercise_name, mode, target, rest_time, adjustment, total_accumulated, session_duration, attempt_count, completed_at
+- Auto-saved when user completes a session (CompletionScreen.tsx)
+
+**Attempts Table**:
+- Individual sets within each session
+- Fields: session_ref, attempt_number, value, adjustment, total_counted
+- Batch-created when session is saved
+
+### Service Layer (`lib/airtable.ts`)
+
+Uses Airtable Web API directly (no SDK required) for lightweight integration:
+
+```typescript
+// Environment variables (NEXT_PUBLIC_ prefix for client-side access)
+NEXT_PUBLIC_AIRTABLE_BASE_ID=appKNnqnplJrCPua3
+NEXT_PUBLIC_AIRTABLE_API_KEY=patXXXXXXXXXXXXX
+
+// Key functions:
+- getExercises() / createExercise() / updateExercise() / deleteExercise()
+- getSessions() / createSession()
+- getAttempts() / createAttempts()
+- getExerciseStats() / getAllExerciseStats()
+```
+
+**Performance Metrics Calculated**:
+- Best session per exercise
+- Average accumulated (mean of all sessions)
+- Average attempts and session duration
+- Trend analysis (last 5 sessions vs previous 5 sessions):
+  - Improving: >5% improvement
+  - Declining: <-5% decline
+  - Stable: within ±5%
+
+### New Screen Architecture
+
+**App State Flow**:
+```
+Setup Screen → Exercises Screen (manage presets)
+             → History Screen (view stats)
+             → Training Screen (timer/reps)
+             → Rest Screen
+             → Completion Screen (auto-save to Airtable)
+             → Setup Screen (new session)
+```
+
+**Component Structure** (updated):
+```
+/components
+  SetupScreen.tsx           - Exercise selection + quick actions
+  ExercisesScreen.tsx       - CRUD for exercise presets
+  HistoryScreen.tsx         - Stats overview + session history
+  TimeTrainingScreen.tsx    - Timer-based training (unchanged)
+  RepsTrainingScreen.tsx    - Manual rep entry (unchanged)
+  RestScreen.tsx            - Shared rest countdown (unchanged)
+  CompletionScreen.tsx      - Results + auto-save to Airtable
+  RepInputModal.tsx         - Rep count input (unchanged)
+  AboutModal.tsx            - Usage instructions (unchanged)
+
+/lib
+  utils.ts                  - Formatting functions (unchanged)
+  audio.ts                  - Web Audio API (unchanged)
+  airtable.ts               - NEW: Airtable service layer
+```
+
+### Key Features Added
+
+1. **Exercise Presets**: Users can save favorite exercises with default settings
+2. **Cloud Storage**: All sessions automatically saved to Airtable
+3. **History & Analytics**:
+   - Overview: Total sessions, weekly/monthly volume, per-exercise performance
+   - Exercise Details: Full session history with timestamps
+   - Trends: Visual indicators for improving/declining/stable performance
+4. **No Authentication**: Single-user app (personal use only)
+
+### Data Privacy
+
+- No user authentication required (simpler for personal use)
+- Airtable API key stored in `.env.local` (never committed to git)
+- Anyone with the URL can access the app and data
+- Suitable for personal training tracking
+
+### Development Workflow
+
+```bash
+# Initial setup
+npm install
+# Add Airtable API key to .env.local
+npm run dev
+
+# Deployment (Vercel)
+# Set environment variables in Vercel dashboard
+vercel --prod --yes
+```
+
+### Critical Implementation Notes
+
+1. **Client-Side API Calls**: All Airtable calls happen from browser (no server-side route needed)
+2. **Auto-Save on Completion**: CompletionScreen saves session immediately on mount
+3. **Graceful Degradation**: If save fails, user still sees results (no blocking)
+4. **Exercise Selection**: SetupScreen loads exercises on mount and pre-fills first exercise
+5. **Stats Calculation**: Trend analysis requires ≥6 sessions to compare recent vs previous performance
+
+### Testing Checklist (Updated)
+
+- [ ] Exercise CRUD operations work (create, edit, delete)
+- [ ] SetupScreen loads exercises from Airtable
+- [ ] Session saves to Airtable on completion
+- [ ] History screen shows accurate stats
+- [ ] Trend indicators calculated correctly
+- [ ] All original timer functionality still works
+- [ ] Works offline after initial load (PWA)
+- [ ] Airtable API key not exposed in client code
+- [ ] .env.local not committed to git
+
+### Deployment Considerations
+
+**Environment Variables**:
+- Must set `NEXT_PUBLIC_AIRTABLE_BASE_ID` and `NEXT_PUBLIC_AIRTABLE_API_KEY` in Vercel
+- Base ID: appKNnqnplJrCPua3 (AI_Test base)
+- API key: Create at https://airtable.com/create/tokens with scopes:
+  - `data.records:read`
+  - `data.records:write`
+  - `schema.bases:read`
+
+**Mobile PWA**:
+- Add to iOS home screen for app-like experience
+- Works offline after initial load (Next.js caching)
+- Screen wake lock still prevents sleep during training
+
+See `SETUP.md` for user-facing setup instructions.

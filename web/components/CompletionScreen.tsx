@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { formatSeconds, formatTime } from "@/lib/utils";
 import { Trophy, RotateCcw } from "lucide-react";
+import { createSession, createAttempts } from "@/lib/airtable";
 import type { TrainingMode } from "./SetupScreen";
 import type { Attempt } from "./TimeTrainingScreen";
 
@@ -9,6 +11,9 @@ interface CompletionScreenProps {
   mode: TrainingMode;
   totalAccumulated: number;
   target: number;
+  restTime: number;
+  adjustment: number;
+  exerciseName: string;
   attempts: Attempt[];
   sessionDuration: number;
   onNewSession: () => void;
@@ -18,10 +23,60 @@ export default function CompletionScreen({
   mode,
   totalAccumulated,
   target,
+  restTime,
+  adjustment,
+  exerciseName,
   attempts,
   sessionDuration,
   onNewSession,
 }: CompletionScreenProps) {
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    saveSession();
+  }, []);
+
+  async function saveSession() {
+    // Skip saving for Quick Sessions
+    if (exerciseName === "Quick Session") {
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      // Create session record
+      const session = await createSession({
+        exercise_name: exerciseName,
+        mode,
+        target,
+        rest_time: restTime,
+        adjustment,
+        total_accumulated: totalAccumulated,
+        session_duration: sessionDuration,
+        attempt_count: attempts.length,
+      });
+
+      // Create attempt records
+      const attemptRecords = attempts.map((attempt, index) => ({
+        session_ref: session.id!,
+        attempt_number: index + 1,
+        value: attempt.value,
+        adjustment: attempt.bonus,
+        total_counted: attempt.total,
+      }));
+
+      await createAttempts(attemptRecords);
+
+      setSaved(true);
+    } catch (error) {
+      console.error("Failed to save session:", error);
+      // Continue anyway - user can still see results
+    } finally {
+      setSaving(false);
+    }
+  }
   return (
     <div className="h-screen bg-blue-600 flex flex-col p-6">
       {/* Celebration Header */}
@@ -30,7 +85,9 @@ export default function CompletionScreen({
           <Trophy size={60} className="text-yellow-300" />
         </div>
         <h1 className="text-white text-4xl font-bold mb-1">Goal Complete!</h1>
-        <p className="text-white/80 text-base">Great work!</p>
+        <p className="text-white/80 text-base">
+          {saving ? "Saving session..." : saved ? "Session saved ✓" : "Great work!"}
+        </p>
       </div>
 
       {/* Session Summary Card */}
