@@ -130,7 +130,7 @@ export async function getSessions(exerciseName?: string): Promise<Session[]> {
     ...record.fields,
     // Use completed_at if available, otherwise fall back to createdTime
     completed_at: record.fields.completed_at || record.createdTime,
-  }));
+  })) as Session[];
 
   return records.sort((a, b) => new Date(b.completed_at!).getTime() - new Date(a.completed_at!).getTime());
 }

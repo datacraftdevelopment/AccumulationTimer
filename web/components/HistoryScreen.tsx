@@ -123,9 +123,9 @@ export default function HistoryScreen({ onBack, initialExercise }: HistoryScreen
         {/* Stats Summary */}
         {exerciseStats && (
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-4">
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-6">
               <div className="text-center">
-                <p className="text-white/60 text-sm">Best Session</p>
+                <p className="text-white/60 text-sm mb-1">Best Session</p>
                 <p className="text-white font-bold text-2xl">
                   {sessions[0]?.mode === "time"
                     ? exerciseStats.bestSession.toFixed(1)
@@ -133,24 +133,22 @@ export default function HistoryScreen({ onBack, initialExercise }: HistoryScreen
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-white/60 text-sm">Average</p>
+                <p className="text-white/60 text-sm mb-1">Average</p>
                 <p className="text-white font-bold text-2xl">
                   {sessions[0]?.mode === "time"
                     ? exerciseStats.averageAccumulated.toFixed(1)
                     : Math.round(exerciseStats.averageAccumulated)}
                 </p>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div className="text-center">
-                <p className="text-white/60 text-sm">Avg Attempts</p>
-                <p className="text-white font-bold text-xl">
+                <p className="text-white/60 text-sm mb-1">Avg Attempts</p>
+                <p className="text-white font-bold text-2xl">
                   {exerciseStats.averageAttempts.toFixed(1)}
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-white/60 text-sm">Avg Duration</p>
-                <p className="text-white font-bold text-xl">
+                <p className="text-white/60 text-sm mb-1">Avg Duration</p>
+                <p className="text-white font-bold text-2xl">
                   {formatTime(Math.round(exerciseStats.averageSessionDuration))}
                 </p>
               </div>

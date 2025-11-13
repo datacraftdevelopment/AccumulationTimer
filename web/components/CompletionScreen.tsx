@@ -2,10 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { formatSeconds, formatTime } from "@/lib/utils";
-import { Trophy, RotateCcw } from "lucide-react";
-import { createSession, createAttempts } from "@/lib/airtable";
+import { Trophy, RotateCcw, Zap } from "lucide-react";
+import { createSession, createAttempts, getSessions, getAttemptsForSessions } from "@/lib/airtable";
 import type { TrainingMode } from "./SetupScreen";
 import type { Attempt } from "./TimeTrainingScreen";
+
+interface PersonalRecords {
+  bestHold: boolean;
+  fastestCompletion: boolean;
+  highestTotal: boolean;
+}
 
 interface CompletionScreenProps {
   mode: TrainingMode;
@@ -32,10 +38,74 @@ export default function CompletionScreen({
 }: CompletionScreenProps) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [prs, setPrs] = useState<PersonalRecords>({
+    bestHold: false,
+    fastestCompletion: false,
+    highestTotal: false,
+  });
+  const [checkingPrs, setCheckingPrs] = useState(true);
 
   useEffect(() => {
+    checkPersonalRecords();
     saveSession();
   }, []);
+
+  async function checkPersonalRecords() {
+    // Skip PR check for Quick Sessions
+    if (exerciseName === "Quick Session") {
+      setCheckingPrs(false);
+      return;
+    }
+
+    try {
+      // Get previous sessions for this exercise
+      const previousSessions = await getSessions(exerciseName);
+
+      if (previousSessions.length === 0) {
+        // First session ever - all PRs!
+        setPrs({
+          bestHold: true,
+          fastestCompletion: true,
+          highestTotal: true,
+        });
+        setCheckingPrs(false);
+        return;
+      }
+
+      // Calculate current best hold
+      const currentBestHold = Math.max(...attempts.map(a => a.value));
+
+      // Get all attempt data for previous sessions
+      const sessionIds = previousSessions.map(s => s.id!);
+      const previousAttempts = await getAttemptsForSessions(sessionIds);
+
+      // Find historical best hold
+      let historicalBestHold = 0;
+      for (const sessionId in previousAttempts) {
+        const sessionAttempts = previousAttempts[sessionId];
+        const sessionBest = Math.max(...sessionAttempts.map(a => a.value));
+        if (sessionBest > historicalBestHold) {
+          historicalBestHold = sessionBest;
+        }
+      }
+
+      // Find historical fastest completion
+      const historicalFastestCompletion = Math.min(...previousSessions.map(s => s.session_duration));
+
+      // Find historical highest total
+      const historicalHighestTotal = Math.max(...previousSessions.map(s => s.total_accumulated));
+
+      setPrs({
+        bestHold: currentBestHold > historicalBestHold,
+        fastestCompletion: sessionDuration < historicalFastestCompletion,
+        highestTotal: totalAccumulated > historicalHighestTotal,
+      });
+    } catch (error) {
+      console.error("Failed to check PRs:", error);
+    } finally {
+      setCheckingPrs(false);
+    }
+  }
 
   async function saveSession() {
     // Skip saving for Quick Sessions
@@ -98,7 +168,15 @@ export default function CompletionScreen({
 
         <div className="space-y-2 text-white">
           <div className="flex justify-between items-center">
-            <span className="text-white/80">Total:</span>
+            <span className="text-white/80 flex items-center gap-2">
+              Total:
+              {!checkingPrs && prs.highestTotal && (
+                <span className="flex items-center gap-1 text-yellow-300 text-xs font-bold">
+                  <Zap size={14} fill="currentColor" />
+                  PR
+                </span>
+              )}
+            </span>
             <span className="font-bold text-xl">
               {mode === "time"
                 ? formatSeconds(totalAccumulated)
@@ -119,8 +197,33 @@ export default function CompletionScreen({
           </div>
 
           <div className="flex justify-between items-center text-sm">
-            <span className="text-white/80">Duration:</span>
+            <span className="text-white/80 flex items-center gap-2">
+              Duration:
+              {!checkingPrs && prs.fastestCompletion && (
+                <span className="flex items-center gap-1 text-yellow-300 text-xs font-bold">
+                  <Zap size={12} fill="currentColor" />
+                  PR
+                </span>
+              )}
+            </span>
             <span className="font-semibold">{formatTime(sessionDuration)}</span>
+          </div>
+
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-white/80 flex items-center gap-2">
+              Best {mode === "time" ? "Hold" : "Set"}:
+              {!checkingPrs && prs.bestHold && (
+                <span className="flex items-center gap-1 text-yellow-300 text-xs font-bold">
+                  <Zap size={12} fill="currentColor" />
+                  PR
+                </span>
+              )}
+            </span>
+            <span className="font-semibold">
+              {mode === "time"
+                ? formatSeconds(Math.max(...attempts.map(a => a.value)))
+                : `${Math.floor(Math.max(...attempts.map(a => a.value)))} reps`}
+            </span>
           </div>
         </div>
       </div>
